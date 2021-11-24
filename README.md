@@ -1,0 +1,2 @@
+# Strider
+Pedometer app. 
