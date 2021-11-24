@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Strider</string>
+    <string name="steps_taken">Steps Taken</string>
+    <string name="distance_traveled">Distance Traveled</string>
+    <string name="_0">0</string>
+    <string name="remaining_distance">Remaining Distance</string>
+    <string name="remaining_steps">Remaining Steps</string>
+    <string name="pace">pace</string>
+    <string name="distance">distance</string>
+    <string name="configure_pace">Configure Pace</string>
+    <string name="target_distance">Target Distance</string>
+    <string name="start">Start</string>
+
+    <string-array name="pace_distances">
+        <item>Meter</item>
+        <item>Feet</item>
+    </string-array>
+
+    <string-array name="distances">
+        <item>Meter</item>
+        <item>Kilometer</item>
+        <item>Feet</item>
+        <item>Mile</item>
+    </string-array>
+</resources>

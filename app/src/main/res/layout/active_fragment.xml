@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activeFragment"
+            type="com.vainpower.strider.ActiveFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.vainpower.strider.model.PaceViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/startFragement"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ActiveFragment">
+
+
+        <TextView
+            android:id="@+id/Steps_Traveled_Message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/steps_taken"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Traveled_steps_Label"
+            tools:text="Steps Taken" />
+
+        <TextView
+            android:id="@+id/Traveled_steps_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/distance_traveled"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Distance Traveled" />
+
+        <TextView
+            android:id="@+id/Traveled_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@{viewModel.currentPaces.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.324"
+            app:layout_constraintStart_toEndOf="@+id/Steps_Traveled_Message"
+            app:layout_constraintTop_toBottomOf="@+id/Traveled_steps_Label"
+            tools:text="260" />
+
+        <TextView
+            android:id="@+id/Distance_Traveled_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/distance_traveled"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Steps_Traveled_Message"
+            tools:text="Distance Traveled" />
+
+        <TextView
+            android:id="@+id/Distance_Traveled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@{viewModel.currentDistance.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.218"
+            app:layout_constraintStart_toEndOf="@+id/Distance_Traveled_Label"
+            app:layout_constraintTop_toBottomOf="@+id/Traveled_steps"
+            tools:text="73" />
+
+        <TextView
+            android:id="@+id/Remaining_Distance_Message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="150dp"
+            android:text="@string/remaining_distance"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Traveled_steps_Label"
+            tools:text="Remaining Distance" />
+
+        <TextView
+            android:id="@+id/Remaining_Steps_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/remaining_steps"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Remaining_Distance_Message"
+            tools:text="Remaining Steps" />
+
+        <TextView
+            android:id="@+id/Remaining_Steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:text="@{viewModel.remainingPaces.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.079"
+            app:layout_constraintStart_toEndOf="@+id/Remaining_Steps_Label"
+            app:layout_constraintTop_toBottomOf="@+id/Remaining_Distance_Message"
+            tools:text="322" />
+
+        <TextView
+            android:id="@+id/Remaining_Distance_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/remaining_distance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Remaining_Steps_Label"
+            tools:text="Remaining Distance" />
+
+        <TextView
+            android:id="@+id/Remaining_Distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="30dp"
+            android:text="@{viewModel.remainingDistance.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toEndOf="@+id/Remaining_Distance_Label"
+            app:layout_constraintTop_toBottomOf="@+id/Remaining_Steps"
+            tools:text="332" />
+
+        <TextView
+            android:id="@+id/remainingDistanceUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@{viewModel.activeUnitString}"
+            app:layout_constraintStart_toEndOf="@+id/Remaining_Distance"
+            app:layout_constraintTop_toBottomOf="@+id/Remaining_Steps"
+            tools:text="Meters" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@{viewModel.activeUnitString}"
+            tools:text="Meter"
+            app:layout_constraintStart_toEndOf="@+id/Distance_Traveled"
+            app:layout_constraintTop_toBottomOf="@+id/Traveled_steps" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.vainpower.strider.StartFragment"
+        android:label="Configure"
+        tools:layout="@layout/start_fragement" >
+        <action
+            android:id="@+id/action_startFragment_to_activeFragment"
+            app:destination="@id/activeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/activeFragment"
+        android:name="com.vainpower.strider.ActiveFragment"
+        android:label="Activity In Progress"
+        tools:layout="@layout/active_fragment" />
+</navigation>
