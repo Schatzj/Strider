@@ -1,26 +1,25 @@
 package com.vainpower.strider
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.vainpower.strider.databinding.StartFragementBinding
-import com.vainpower.strider.model.PaceViewModel
 import android.widget.AdapterView
 
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.vainpower.strider.model.*
 import com.vainpower.strider.service.sensorService
 
 
@@ -31,6 +30,20 @@ class StartFragment : Fragment(){
     private val sharedViewModel : PaceViewModel by activityViewModels()
     private var service : Intent? = null
 
+    private val configInfoRepo: ConfigInfoModel by activityViewModels {
+        ConfigInfoViewModelFactory(
+            (activity?.application as Strider).database
+                .configInfoDao()
+        )
+    }
+
+    private val settingInfoRepo: SettingInfoModel by activityViewModels {
+        SettingInfoViewModelFactory(
+            (activity?.application as Strider).database
+                .settingInfoDao()
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +51,8 @@ class StartFragment : Fragment(){
     ): View {
         val fragmentBinding = StartFragementBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        setHasOptionsMenu(true)
+
         return fragmentBinding.root
     }
 
@@ -53,13 +68,22 @@ class StartFragment : Fragment(){
             context?.stopService(service)
         }
 
-
         sharedViewModel.resetData()
+        var configInfo = configInfoRepo.readConfigInfo()
+        sharedViewModel.setPaces(configInfo?.paces ?: 0)
+        sharedViewModel.setPaceDistance(configInfo?.paceDistance ?: 100)
+        sharedViewModel.setPaceDistanceUnit(configInfo?.paceUnit ?: 0)
+
+        settingInfoRepo.readSettings()?.let { sharedViewModel.setSettingsInfo(it) }
+        if(sharedViewModel.getSettingInfo() == null || sharedViewModel.getSettingInfo().id != 1){
+            sharedViewModel.setPaceChimeSetting(true)
+            sharedViewModel.setPaceVibrateSetting(true)
+            sharedViewModel.setTargetChimeSetting(true)
+            sharedViewModel.setTargetVibrateSetting(true)
+        }
 
         binding?.button?.setOnClickListener {
-            //requestPermission()
             requestPermission()
-            //Log.d("onClick", "onViewCreated: CLICKED")
 
         }
         val appContext = context
@@ -122,7 +146,6 @@ class StartFragment : Fragment(){
                     parent: AdapterView<*>, view: View?, position: Int,
                     id: Long
                 ) {
-                    Log.d("Selected item is:", "position is: $position")
                     var unit: Int = 0
                     when {
                         position < 1 -> {
@@ -146,6 +169,7 @@ class StartFragment : Fragment(){
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun requestPermission(){
         val CONTEXT = context;
@@ -156,11 +180,24 @@ class StartFragment : Fragment(){
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
                 service = Intent(context, sensorService::class.java)
+//                service = PendingIntent(sensorService::class.java);
+                //service?.setFlags(PendingIntent.FLAG_IMMUTABLE)
                 service?.putExtra("paces", sharedViewModel.paces.value.toString())
+                service?.putExtra("pacesDistance", sharedViewModel.paceDistance.value.toString())
                 service?.putExtra("pacesUnit", sharedViewModel.paceDistanceUnit.value.toString())
                 service?.putExtra("targetDistance", sharedViewModel.targetDistance.value.toString())
                 service?.putExtra("targetDistanceUnit", sharedViewModel.targetDistanceUnit.value.toString())
+
+                service?.putExtra("paceChime", sharedViewModel.getPaceChimeSetting())
+                service?.putExtra("paceVibrate", sharedViewModel.getPaceVibrateSetting())
+                service?.putExtra("targetChime", sharedViewModel.getTargetChimeSetting())
+                service?.putExtra("targetVibrate", sharedViewModel.getTargetVibrateSetting())
+
                 CONTEXT.startForegroundService(service)
+
+                configInfoRepo.saveConfig(sharedViewModel.paces.value!!, sharedViewModel.paceDistance.value!!,
+                    sharedViewModel.paceDistanceUnit.value!!)
+
                 findNavController().navigate(R.id.action_startFragment_to_activeFragment)
                 //Navigation.findNavController(view).navigate(R.id.action_startFragment_to_activeFragment)
 
@@ -185,9 +222,24 @@ class StartFragment : Fragment(){
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             isGranted: Boolean ->
         if(isGranted){
-            Log.d("permissions", "Recieved permissions: ")
+
         }else{
-            Log.d("permissions", "did not Recieved permissions: ")
+
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.layout_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                findNavController().navigate(R.id.action_startFragment_to_settingFragment)
+                return true
+            }
+            else -> true//super.onOptionsItemSelected(item)
         }
     }
 }
+

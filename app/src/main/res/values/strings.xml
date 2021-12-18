@@ -10,6 +10,7 @@
     <string name="configure_pace">Configure Pace</string>
     <string name="target_distance">Target Distance</string>
     <string name="start">Start</string>
+    <string name="Strider">Strider</string>
 
     <string-array name="pace_distances">
         <item>Meter</item>

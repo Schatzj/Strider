@@ -5,8 +5,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.provider.Telephony
-import android.util.Log
 import com.vainpower.strider.model.PaceViewModel
 
 class walkingSensor : SensorEventListener {

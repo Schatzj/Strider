@@ -13,10 +13,21 @@
         <action
             android:id="@+id/action_startFragment_to_activeFragment"
             app:destination="@id/activeFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/activeFragment"
         android:name="com.vainpower.strider.ActiveFragment"
         android:label="Activity In Progress"
-        tools:layout="@layout/active_fragment" />
+        tools:layout="@layout/active_fragment" >
+        <action
+            android:id="@+id/action_activeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.vainpower.strider.SettingFragment"
+        android:label="SettingFragment" />
 </navigation>

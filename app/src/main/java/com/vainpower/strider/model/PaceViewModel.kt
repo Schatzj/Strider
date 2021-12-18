@@ -4,12 +4,11 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.text.Editable
-import android.util.Log
-import androidx.databinding.BaseObservable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.play.core.internal.ce
+import com.vainpower.strider.data.SettingInfo
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -55,6 +54,8 @@ class PaceViewModel : ViewModel() {
     private var totalStepsRequired : Int = 0
     var playSound = 0;
 
+    private var settings : SettingInfo = SettingInfo(0, true, true, true, true)
+
     private val TAG = "ViewModel"
 
     init {
@@ -71,7 +72,7 @@ class PaceViewModel : ViewModel() {
 
     fun startActivity(){
         countStep = false
-        _stepDistance = ((_paceDistance.value?.div(_paces.value!!))?.toDouble() ?: 1.0)
+        _stepDistance = ((_paceDistance.value?.div(_paces.value!!.toDouble())) ?: 1.0)
         if(_paceDistanceUnit.value == METER){
             convertTargetDistanceToMeters();
             _activeUnitString.value = "Meters"
@@ -101,7 +102,6 @@ class PaceViewModel : ViewModel() {
         }
 
         if(stepsTaken >= totalStepsRequired){
-            Log.d(TAG, "handleStep: model is set to play sound 2")
             playSound = 2
         }
     }
@@ -186,6 +186,10 @@ class PaceViewModel : ViewModel() {
         _paces.value = value
     }
 
+    public fun setPaceDistance(value : Int){
+        _paceDistance.value = value
+    }
+
     public fun setPacesDistance(value : Editable){
         if(value != null && value.isEmpty() == false){
             _paceDistance.value = Integer.parseInt(value.toString())
@@ -224,5 +228,45 @@ class PaceViewModel : ViewModel() {
         }else{
             return BigDecimal.ONE.stripTrailingZeros()
         }
+    }
+
+    public fun getSettingInfo(): SettingInfo {
+        return settings
+    }
+
+    public fun setSettingsInfo(settings : SettingInfo){
+        this.settings = settings
+    }
+
+    public fun getPaceChimeSetting(): Boolean {
+        return settings.paceChime
+    }
+
+    public fun setPaceChimeSetting(value : Boolean){
+        settings.paceChime = value
+    }
+
+    public fun getPaceVibrateSetting(): Boolean {
+        return settings.paceVibrate
+    }
+
+    public fun setPaceVibrateSetting(value : Boolean){
+        settings.paceVibrate = value
+    }
+
+    public fun getTargetChimeSetting(): Boolean {
+        return settings.targetChime
+    }
+
+    public fun setTargetChimeSetting(value : Boolean){
+        settings.targetChime = value
+    }
+
+    public fun getTargetVibrateSetting(): Boolean {
+        return settings.targetVibrate
+    }
+
+    public fun setTargetVibrateSetting(value : Boolean){
+        settings.targetVibrate = value
     }
 }
